@@ -23,19 +23,11 @@ import sys
 import os
 import logging
 
-try:
-    import pypass.pyp as pyp
-    from pypass import __version__, __author__, __copyright__
-    from pypass import __license_text__, __application__, __locale_dir__
-    from pypass import __url__, __credits__
-    from pypass.pypobj import PypFolder, PypAccount
-except ImportError:
-    # Application isn't installed
-    import src.pyp as pyp
-    from src import __version__, __author__, __copyright__, __credits__
-    from src import __license_text__, __application__, __locale_dir__
-    from src import __url__
-    from src.pypobj import PypFolder, PypAccount
+import pypass.pyp as pyp
+from pypass import __version__, __author__, __copyright__
+from pypass import __license_text__, __application__, __locale_dir__
+from pypass import __url__, __credits__
+from pypass.pypobj import PypFolder, PypAccount
 
 LOG = logging.getLogger(__name__)
 if not LOG.handlers:
@@ -316,7 +308,7 @@ class PyPassGui(object):
         about.set_license(__license_text__)
         about.set_website(__url__)
         _logo_path = os.path.join(os.path.dirname(
-                os.path.realpath(__file__)), "..", "data", "PyPass.png")
+                os.path.realpath(__file__)), "data", "PyPass.png")
         about.set_logo(gtk.gdk.pixbuf_new_from_file(_logo_path))
 
         _dialog(about)
@@ -463,7 +455,10 @@ class PyPassGui(object):
                 return
         if self.created:
             self.save_as_database()
-        print self.key
+        if self.filename is None:
+            result = dialog_window(_("No database file specified!"),
+            action=gtk.MESSAGE_ERROR)
+            return
         self.pypass.data_from_json(self.data)
         outcome = self.pypass.crypt(force=True, recipients=self.key,
                                     filename=self.filename)
@@ -477,7 +472,7 @@ class PyPassGui(object):
             result = dialog_window(_("The database could not be saved!"),
             action=gtk.MESSAGE_ERROR)
             return
-        self.update_status_bar(_("Database saved"))
+        self.update_status_bar(_("Database saved in %s" % self.filename))
         self.modified_db = False
         return True
 
