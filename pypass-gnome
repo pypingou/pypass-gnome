@@ -22,19 +22,14 @@
 import argparse
 import gettext
 
+import pypass
+from pypass import pyp
+from pypass import __version__, __application__, __description__
+from pypass import __locale_dir__
 try:
-    import pypass
-    from pypass import pyp
-    from pypass import __version__, __application__, __description__
-    from pypass import __locale_dir__
-    from pypass.gtk import gui
-except ImportError:
-    # Application isn't installed
-    import src
-    from src import pyp
-    from src import __version__, __application__, __description__
-    from src import __locale_dir__
-    from src.gtk import gui
+   from pypass.gtk import gui
+except:
+   from src import gui
 
 import logging
 LOG = logging.getLogger(__name__)
