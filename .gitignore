@@ -1,0 +1,19 @@
+# Python-specific build output
+*.pyd
+*.pyc
+*.pyo
+*.egg-info
+build
+
+#eclipse project stuff
+*.project
+*.pydevproject
+*.settings
+
+# projectr specific output
+*.asc
+*.log
+*.mo
+
+#backup files
+*~
