@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=PyPass
+Type=Application
+Exec=PyPass-gtk
+Icon=PyPass
+Comment=Manage all your accounts in an easy and secure way with GPG
+MimeType=
+Categories=Utility;
