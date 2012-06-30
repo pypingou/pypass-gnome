@@ -286,8 +286,8 @@ class PyPassGui(object):
         """
         Loads the given PypFolder into the given treestore with the
         given parent
-        This function is recursive to load the whole tree in memory including
-        children folders and accounts
+        This function is recursive to load the whole tree in memory
+        including children folders and accounts
         """
         for folder in obj.folders:
             icon = gtk.STOCK_DIRECTORY
@@ -392,6 +392,19 @@ class PyPassGui(object):
         treeview.set_model(store)
         for key in keys:
             store.append([key['keyid'], " ".join(key['uids'])])
+
+    def set_path(self, model, itera):
+        """ Set the selection focus of the tree on the element selected
+        and expand the selected element.
+        This prevent the tree from colapsing when adding a new folder.
+        """
+        tree = self.builder.get_object("treefolderview")
+        if itera:
+            path = model.get_path(itera)
+        else:
+            path = (0,)
+        tree.expand_row((path[0], ), True)
+        tree.set_cursor(path)
 
     def set_folder_dialog(self):
         """
@@ -745,6 +758,7 @@ class PyPassGui(object):
         self.load_password_tree(data)
         self.update_status_bar(_("Folder added"))
         self.modified_db = True
+        self.set_path(model, itera)
 
     def update_status_bar(self, entry):
         """ Update the status bar with the given text """
